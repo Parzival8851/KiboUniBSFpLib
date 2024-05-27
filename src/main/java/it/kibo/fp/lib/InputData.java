@@ -22,13 +22,13 @@ public final class InputData {
   private static final String RED_ATTENTION = AnsiColors.RED + "Attention!" + AnsiColors.RESET;
   private static final String ALPHANUMERIC_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
   private static final String ALPHANUMERIC_CHARACTERS_ERROR = RED_ATTENTION
-      + "\nOnly alphanumeric characters are allowed.";
+          + "\nOnly alphanumeric characters are allowed.";
   private static final String EMPTY_STRING_ERROR = RED_ATTENTION + "\nNo characters were inserted.";
   private static final String ALLOWED_CHARACTERS_ERROR = RED_ATTENTION + "\nThe only allowed characters are: %s";
   private static final String INTEGER_FORMAT_ERROR = RED_ATTENTION
-      + "\nThe inserted data is in a incorrect format. An integer is required.";
+          + "\nThe inserted data is in a incorrect format. An integer is required.";
   private static final String DOUBLE_FORMAT_ERROR = RED_ATTENTION
-      + "\nThe inserted data is in a incorrect format. A double is required.";
+          + "\nThe inserted data is in a incorrect format. A double is required.";
   private static final String MINIMUM_ERROR = RED_ATTENTION + "\nA value greater equal than %.2f is required.";
   private static final String MAXIMUM_ERROR = RED_ATTENTION + "\nA value less equal than %.2f is required.";
   private static final String YES_ANSWERS = "yY";
@@ -47,7 +47,7 @@ public final class InputData {
    * Verifies if the given message has only alphanumeric characters.
    *
    * @param message The message to verify.
-   * 
+   *
    * @return A <code>boolean</code> representing if the message is alphanumeric or
    *         not.
    */
@@ -71,10 +71,11 @@ public final class InputData {
    *
    * @param message      The message to print.
    * @param alphanumeric If the input needs to be alphanumeric or not.
-   * 
+   * @param singleWord   If the input needs to be a single word or not.
+   *
    * @return A <code>String</code> representing the user input.
    */
-  public static String readString(String message, boolean alphanumeric) {
+  public static String readString(String message, boolean alphanumeric, boolean  singleWord) {
     boolean isAlphanumeric;
     String read;
 
@@ -82,7 +83,7 @@ public final class InputData {
       do {
         System.out.print(message);
 
-        read = reader.next();
+        read = singleWord ? reader.next() : reader.nextLine();
         read = read.trim();
 
         isAlphanumeric = hasAlphanumericCharacters(read);
@@ -108,15 +109,16 @@ public final class InputData {
    *
    * @param message      The message to print.
    * @param alphanumeric If the input needs to be alphanumeric or not.
-   * 
+   * @param singleWord   If the input needs to be a single word or not.
+   *
    * @return A <code>String</code> representing the user input.
    */
-  public static String readNonEmptyString(String message, boolean alphanumeric) {
+  public static String readNonEmptyString(String message, boolean alphanumeric, boolean singleWord) {
     boolean isStringEmpty = true;
     String read;
 
     do {
-      read = readString(message, alphanumeric);
+      read = readString(message, alphanumeric, singleWord);
 
       if (isStringEmpty = read.isBlank())
         System.out.println(EMPTY_STRING_ERROR);
@@ -133,7 +135,7 @@ public final class InputData {
    *
    * @param message The message to print.
    * @param allowed All the allowed characters.
-   * 
+   *
    * @return A <code>char</code> representing the character tha was read.
    */
   public static char readChar(String message, String allowed) {
@@ -142,7 +144,7 @@ public final class InputData {
     char readChar;
 
     do {
-      read = readNonEmptyString(message, false);
+      read = readNonEmptyString(message, false, true);
 
       readChar = read.charAt(0);
 
@@ -160,13 +162,13 @@ public final class InputData {
    * the user, it will take the first <code>char</code> in it.
    *
    * @param message The message to print.
-   * 
+   *
    * @return A <code>char</code> representing the character tha was read.
    */
   public static char readChar(String message) {
     String read;
 
-    read = readNonEmptyString(message, false);
+    read = readNonEmptyString(message, false, true);
 
     return read.charAt(0);
   }
@@ -177,7 +179,7 @@ public final class InputData {
    * <code>true</code>, <code>false</code> otherwise.
    *
    * @param question The question to print.
-   * 
+   *
    * @return A <code>boolean</code> representing the affirmative or negative
    *         answer of the user.
    */
@@ -186,7 +188,7 @@ public final class InputData {
 
     question = question + "? [" + YES_ANSWERS.charAt(1) + "/" + NO_ANSWERS.charAt(0) + "] ";
 
-    valoreLetto = readChar(question, "yYnN");
+    valoreLetto = readChar(question);
 
     return YES_ANSWERS.indexOf(valoreLetto) != -1;
   }
@@ -199,7 +201,7 @@ public final class InputData {
    * Prints <code>message</code> in the terminal and reads the text inserted by
    * the user. It will print an error message if the text inserted isn't an
    * integer.
-   * 
+   *
    * @return An <code>int</code> representing the integer that was read.
    */
   public static int readInteger(String message) {
@@ -232,7 +234,7 @@ public final class InputData {
    *
    * @param message The message to print.
    * @param min     The minimum value to read.
-   * 
+   *
    * @return An <code>int</code> representing the integer that was read.
    */
   public static int readIntegerWithMinimum(String message, int min) {
@@ -258,7 +260,7 @@ public final class InputData {
    *
    * @param message The message to print.
    * @param max     The maximum value to read.
-   * 
+   *
    * @return An <code>int</code> representing the integer that was read.
    */
   public static int readIntegerWithMaximum(String message, int max) {
@@ -286,7 +288,7 @@ public final class InputData {
    * @param message The message to print.
    * @param min     The minimum value to read.
    * @param max     The maximum value to read.
-   * 
+   *
    * @return An <code>int</code> representing the integer that was read.
    */
   public static int readIntegerBetween(String message, int min, int max) {
@@ -312,7 +314,7 @@ public final class InputData {
    * the user. It will print an error message if the text inserted isn't a double.
    *
    * @param message The message to print.
-   * 
+   *
    * @return A <code>double</code> representing the double that was read.
    */
   public static double readDouble(String message) {
@@ -344,7 +346,7 @@ public final class InputData {
    *
    * @param message The message to print.
    * @param min     The minimum value to read.
-   * 
+   *
    * @return A <code>double</code> representing the double that was read.
    */
   public static double readDoubleWithMinimum(String message, double min) {
@@ -370,7 +372,7 @@ public final class InputData {
    *
    * @param message The message to print.
    * @param max     The maximum value to read.
-   * 
+   *
    * @return An <code>double</code> representing the double that was read.
    */
   public static double readDoubleWithMaximum(String message, double max) {
@@ -398,7 +400,7 @@ public final class InputData {
    * @param message The message to print.
    * @param min     The minimum value to read.
    * @param max     The maximum value to read.
-   * 
+   *
    * @return An <code>double</code> representing the double that was read.
    */
   public static double readDoubleBetween(String message, double min, double max) {
